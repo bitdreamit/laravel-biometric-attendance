@@ -1,0 +1,23 @@
+<?php
+return [
+    'employee'   => 'Employee',
+    'employees'  => 'Employees',
+    'device'     => 'Device',
+    'devices'    => 'Devices',
+    'shift'      => 'Shift',
+    'shifts'     => 'Shifts',
+    'attendance' => 'Attendance',
+    'leave'      => 'Leave',
+    'reports'    => 'Reports',
+    'dashboard'  => 'Dashboard',
+    'check_in'   => 'Check In',
+    'check_out'  => 'Check Out',
+    'present'    => 'Present',
+    'absent'     => 'Absent',
+    'late'       => 'Late',
+    'on_leave'   => 'On Leave',
+    'half_day'   => 'Half Day',
+    'approved'   => 'Approved',
+    'rejected'   => 'Rejected',
+    'pending'    => 'Pending',
+];
