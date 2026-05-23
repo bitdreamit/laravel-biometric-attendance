@@ -2,16 +2,13 @@
 return [
     /*
     |--------------------------------------------------------------------------
-    | UI Layout — customisable theme
+    | UI / Theme
     |--------------------------------------------------------------------------
-    | null      → package default (Bootstrap 4.6, zero dependencies)
+    | null      → Bootstrap 4.6 default (zero dependencies)
     | 'layouts.app' → your own Blade layout (must yield 'content','styles','scripts')
-    |
-    | Tailwind users: set theme=>'tailwind', layout=>'layouts.app'
-    | Filament users: set web_enabled=>false (use your own Filament resource)
     */
-    'layout'  => null,
-    'theme'   => 'bootstrap4',   // bootstrap4 | tailwind | custom
+    'layout' => null,
+    'theme'  => 'bootstrap4',  // bootstrap4 | tailwind | custom
 
     /*
     |--------------------------------------------------------------------------
@@ -28,10 +25,7 @@ return [
     |--------------------------------------------------------------------------
     | Multi-tenancy
     |--------------------------------------------------------------------------
-    | tenant_model  = null  → single tenant (no tenant_id used)
-    | tenant_model  = App\Models\Company::class → multi-tenant
-    | tenant_column = column on employees/attendance tables (default: tenant_id)
-    | tenant_scope  = true  → auto-scope all queries (requires HasBiometricTenant trait)
+    | null → single-tenant (no tenant_id used anywhere)
     */
     'tenant_model'  => null,
     'tenant_column' => 'tenant_id',
@@ -39,7 +33,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Model overrides — swap any model with your own
+    | Model overrides
     |--------------------------------------------------------------------------
     */
     'models' => [
@@ -54,13 +48,24 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Attendance processing rules
+    | Attendance processing
     |--------------------------------------------------------------------------
     */
     'attendance' => [
         'duplicate_window_seconds' => 60,
         'auto_process'             => true,
         'timezone'                 => env('APP_TIMEZONE', 'Asia/Dhaka'),
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Agent settings
+    |--------------------------------------------------------------------------
+    */
+    'agent' => [
+        'token_name'    => 'biometric-agent',
+        'poll_interval' => 300,       // seconds (for display purposes)
+        'offline_threshold_minutes' => 15,  // minutes before device marked offline
     ],
 
     'per_page' => 25,

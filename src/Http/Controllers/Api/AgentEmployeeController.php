@@ -8,12 +8,13 @@ use Illuminate\Routing\Controller;
 /**
  * GET /api/biometric/employees
  * Called by the offline Python agent to sync employee list.
+ * Returns active employees + deleted_ids for soft-deleted ones.
  */
 class AgentEmployeeController extends Controller
 {
     public function index(Request $request): JsonResponse
     {
-        $tenantId = $request->header('X-Tenant-ID') ?? config('biometric.tenant_column');
+        $tenantId = $request->header('X-Tenant-ID');
         $model    = app(config('biometric.models.employee'));
 
         $employees = $model::query()
@@ -22,7 +23,12 @@ class AgentEmployeeController extends Controller
             ->get()
             ->map(fn($e) => $e->toAgentArray());
 
-        // Soft-deleted (removed from server, agent should remove from device)
+        // Mark all returned employees as synced
+        $model::query()
+            ->when($tenantId, fn($q) => $q->where('tenant_id', $tenantId))
+            ->where('sync_status', 'pending')
+            ->update(['sync_status' => 'synced', 'synced_at' => now()]);
+
         $deleted = $model::onlyTrashed()
             ->when($tenantId, fn($q) => $q->where('tenant_id', $tenantId))
             ->pluck('id')
